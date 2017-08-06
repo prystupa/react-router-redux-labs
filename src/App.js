@@ -1,38 +1,52 @@
 import React from 'react';
-import {HashRouter as Router, Route, Link} from 'react-router-dom';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux';
+import {HashRouter, Route, Link} from 'react-router-dom';
+import {ConnectedRouter, routerReducer, routerMiddleware} from 'react-router-redux';
 import logo from './logo.svg';
 import './App.css';
+import reducers from './reducers';
+import AddTodo from "./containers/AddTodo";
+import TodoList from "./containers/TodoList";
+
+const history = new HashRouter().history;
+const middleware = routerMiddleware(history);
+
+const store = createStore(combineReducers({
+    ...reducers,
+    router: routerReducer
+}), applyMiddleware(middleware));
 
 const Home = () =>
     <p className="App-intro">
         To get started, edit <code>src/App.js</code> and save to reload.
     </p>;
 
-const Clients = () =>
+const Todos = () =>
     <div>
-        <h1>Clients</h1>
-        <p><Link to='/clients/eugene'>Eugene</Link></p>
-        <p><Link to='/clients/olga'>Olga</Link></p>
-        <Route path="/clients/:client" component={Client}/>
+        <h1>Todos</h1>
+        <AddTodo/>
+        <TodoList/>
     </div>;
 
-const Client = ({ match }) =>
-    <div>Client view: {match.params.client}</div>;
-
 const App = () =>
-    <Router>
-        <div className="App">
-            <div className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <div>
-                    <Link to="/">Home</Link>
-                    &nbsp;
-                    <Link to="/clients">Clients</Link>
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
+            <div className="App">
+                <div className="App-header">
+                    <img src={logo} className="App-logo" alt="logo"/>
+                    <div>
+                        <Link to="/">Home</Link>
+                        &nbsp;
+                        <Link to="/todos">Todos</Link>
+                    </div>
+                </div>
+                <div className="App-body">
+                    <Route exact path="/" component={Home}/>
+                    <Route path="/todos" component={Todos}/>
                 </div>
             </div>
-            <Route exact path="/" component={Home}/>
-            <Route path="/clients" component={Clients}/>
-        </div>
-    </Router>;
+        </ConnectedRouter>
+    </Provider>;
 
 export default App;
