@@ -1,10 +1,10 @@
+import 'bootstrap/dist/css/bootstrap.css';
+
 import React from 'react';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import {HashRouter, Route, Link} from 'react-router-dom';
 import {ConnectedRouter, routerReducer, routerMiddleware} from 'react-router-redux';
-import logo from './logo.svg';
-import './App.css';
 import reducers from './reducers';
 import AddTodo from "./containers/AddTodo";
 import TodoList from "./containers/TodoList";
@@ -34,7 +34,6 @@ const App = () =>
         <ConnectedRouter history={history}>
             <div className="App">
                 <div className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
                     <div>
                         <Link to="/">Home</Link>
                         &nbsp;
