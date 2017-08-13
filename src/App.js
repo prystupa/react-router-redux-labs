@@ -3,8 +3,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import {HashRouter, Route, Link} from 'react-router-dom';
+import {HashRouter, Route} from 'react-router-dom';
 import {ConnectedRouter, routerReducer, routerMiddleware} from 'react-router-redux';
+import {Container} from 'reactstrap';
+import AppNavbar, {NavItem} from './AppNavbar';
+
 import reducers from './reducers';
 import AddTodo from "./containers/AddTodo";
 import TodoList from "./containers/TodoList";
@@ -29,21 +32,19 @@ const Todos = () =>
         <TodoList/>
     </div>;
 
+
 const App = () =>
     <Provider store={store}>
         <ConnectedRouter history={history}>
-            <div className="App">
-                <div className="App-header">
-                    <div>
-                        <Link to="/">Home</Link>
-                        &nbsp;
-                        <Link to="/todos">Todos</Link>
-                    </div>
-                </div>
-                <div className="App-body">
+            <div>
+                <AppNavbar>
+                    <NavItem to="/" exact={true}>Home</NavItem>
+                    <NavItem to="/todos">Todos</NavItem>
+                </AppNavbar>
+                <Container className="py-3">
                     <Route exact path="/" component={Home}/>
                     <Route path="/todos" component={Todos}/>
-                </div>
+                </Container>
             </div>
         </ConnectedRouter>
     </Provider>;
